@@ -195,20 +195,15 @@ def chooseWord(level, randomWords):
 
     randomWords.append(word)
 
-    return [word, hint]
+    jumble_pos = list(range(len(word)))
+    random.shuffle(jumble_pos)
+    jumbled_word = "".join([word[pos] for pos in jumble_pos])
+
+    return [word, hint, jumbled_word]
 
 def displayWord(word, letters):
 
-    HiddenWord = ""
-    print(word)
-    for i in range(len(word)):
-        if (i == 0) or (i == len(word) - 1):
-            HiddenWord += " " + word[i] + " "
-        elif word[i] in letters:
-            HiddenWord += " " + word[i] + " "
-        else:
-            HiddenWord += " * "
-    wordText = wordGuessFont.render(HiddenWord, True, black)
+    wordText = wordGuessFont.render(word, True, black)
     gameDisplay.blit(wordText, [20, 200])
 
 def displayHint(hint):
@@ -509,7 +504,7 @@ def gameLoop():
 
         if firstWord == True:
             word = chooseWord(1, randomWords)
-            displayWord(word[0], letters)
+            displayWord(word[2], letters)
             displayHint(word[1])
             firstWord = False
 
@@ -557,7 +552,7 @@ def gameLoop():
         displayRatio(correctAnswers, Total)
 
         gameDisplay.blit(wordFrame, [0, 160])
-        displayWord(word[0], letters)
+        displayWord(word[2], letters)
         displayHint(word[1])
 
         for i in range(chances):
